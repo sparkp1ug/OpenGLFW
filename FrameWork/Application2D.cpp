@@ -10,7 +10,6 @@ Application2D::Application2D() : m_gameOver(false), m_window(nullptr)
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 }
 
-
 bool Application2D::createWindow(int width, int height, const char * title, bool fullscreen)
 {
 	m_window = glfwCreateWindow(width, height, title, (fullscreen ? glfwGetPrimaryMonitor() : nullptr), nullptr);
@@ -29,24 +28,31 @@ void Application2D::quit(GLFWwindow * window)
 	if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		m_gameOver = true;
-		glfwSetWindowShouldClose(window, true);
 	}
+	// set it true if the escape key or close button is pressed
+	m_gameOver = m_gameOver || glfwWindowShouldClose(window) == true;
 }
 
 
 
 void Application2D::runApp(const char * title, int width, int height, bool fullscreen)
 {
+	// check if the window has been successfully created
 	if (createWindow(width, height, title, fullscreen))
 	{
+		// render loop
 		while (!m_gameOver)
 		{
+			// input from the user to close the window
 			quit(m_window);
 
+			// render the window with the following color
 			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
 
+			// swap the buffers 
 			glfwSwapBuffers(m_window);
+			// check for any keys or mouse movements
 			glfwPollEvents();
 		}
 	}
