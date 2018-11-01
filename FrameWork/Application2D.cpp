@@ -1,6 +1,7 @@
 #include "Application2D.h"
 #include <GLFW/glfw3.h>
-
+#include <glad/glad.h>
+#include <iostream>
 
 Application2D::Application2D() : m_gameOver(false), m_window(nullptr)
 {
@@ -20,6 +21,14 @@ bool Application2D::createWindow(int width, int height, const char * title, bool
 	}
 	glfwSetFramebufferSizeCallback(m_window, [](GLFWwindow*, int w, int h) {glViewport(0, 0, w, h); });
 	glfwMakeContextCurrent(m_window);
+
+	/* GLAD - load all OpenGL function pointers */
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+	{
+		std::cout << "Failed to initialize GLAD" << std::endl;
+		return false;
+	}
+
 	return true;
 }
 
