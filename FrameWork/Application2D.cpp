@@ -29,7 +29,7 @@ void Application2D::quit(GLFWwindow * window)
 	{
 		m_gameOver = true;
 	}
-	// set it true if the escape key or close button is pressed
+	// set it true if the escape key or close button is pressed ,.
 	m_gameOver = m_gameOver || glfwWindowShouldClose(window) == true;
 }
 
