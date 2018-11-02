@@ -6,9 +6,6 @@
 Application2D::Application2D() : m_gameOver(false), m_window(nullptr)
 {
 	glfwInit();
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 }
 
 bool Application2D::createWindow(int width, int height, const char * title, bool fullscreen)
@@ -49,6 +46,7 @@ void Application2D::runApp(const char * title, int width, int height, bool fulls
 	// check if the window has been successfully created
 	if (createWindow(width, height, title, fullscreen))
 	{
+		start();
 		// render loop
 		while (!m_gameOver)
 		{
@@ -56,17 +54,38 @@ void Application2D::runApp(const char * title, int width, int height, bool fulls
 			quit(m_window);
 
 			// render the window with the following color
-			glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT);
+
+			// check for any keys or mouse movements
+			glfwPollEvents();
+
+			draw();
 
 			// swap the buffers 
 			glfwSwapBuffers(m_window);
-			// check for any keys or mouse movements
-			glfwPollEvents();
+
 		}
 	}
 	glfwDestroyWindow(m_window);
 	glfwTerminate();
+}
+
+void Application2D::start()
+{
+	renderer2D = new Renderer2D();
+}
+
+void Application2D::draw()
+{
+	clearScreen();
+	renderer2D->begin();
+	renderer2D->drawPoint(0.0f, 0.5f, 0.0f);
+}
+
+void Application2D::clearScreen()
+{
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
 Application2D::~Application2D()

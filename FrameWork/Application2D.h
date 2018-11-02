@@ -1,4 +1,7 @@
 #pragma once
+
+#include "Renderer2D.h"
+
 struct GLFWwindow;
 class Application2D
 {
@@ -8,6 +11,12 @@ public:
 
 	/* GLFW - render loop */
 	void runApp(const char* title, int width, int height, bool fullscreen = false);
+
+	void start();
+	void draw();
+
+	/* refreshes the screen */
+	void clearScreen();
 
 	~Application2D();
 
@@ -21,5 +30,8 @@ protected:
 	GLFWwindow* m_window;
 
 	bool m_gameOver;
+
+	/* Application stuff */
+	Renderer2D* renderer2D;
 };
 
