@@ -38,14 +38,16 @@ protected:
 
 	unsigned int m_shader;
 	
-	unsigned int m_VBO, m_VAO;
+	unsigned int m_VBO, m_VAO, m_EBO;
 
 	struct Vertex
 	{
 		float pos[3];
 	};
 
-	Vertex m_vertices[1024];
+	Vertex m_vertices[MAX_SPRITES * 4];
+
+	unsigned int m_indices[MAX_SPRITES * 6];
 };
 
 #endif // !RENDERER2D_H_
