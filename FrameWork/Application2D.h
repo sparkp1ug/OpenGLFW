@@ -1,10 +1,18 @@
-/* ============================================================================================================================ */
-/* OpenGL-Framework																												*/
-/* Copyright (c) 2018 Ramkumar Thiyagarajan																						*/
-/* ============================================================================================================================ */
-/* Description:	Create an OpenGL window and render the sprites drawn on the screen. 											*/
-/*				The scripts for the game should be added in this class.															*/
-/* ============================================================================================================================ */
+/**
+*************************************************************************************************
+* OpenGL-Framework
+* Copyright (c) 2018 Ramkumar Thiyagarajan
+*************************************************************************************************
+* File: Application2D.h
+*
+* Description:	Create an OpenGL window and render the sprites drawn on the screen.
+*				The scripts for the game should be added in this class.
+*
+* Author: Ramkumar Thiyagarajan
+*
+* Date: 6/11/2018
+*************************************************************************************************
+*/
 
 #ifndef APPLICATION2D_H_
 #define APPLICATION2D_H_

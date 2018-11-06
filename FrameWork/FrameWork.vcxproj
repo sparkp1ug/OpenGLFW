@@ -137,7 +137,6 @@
   <ItemGroup>
     <ClInclude Include="Application2D.h" />
     <ClInclude Include="Renderer2D.h" />
-    <ClInclude Include="resource.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,3 +1,19 @@
+/**
+*************************************************************************************************
+* OpenGL-Framework
+* Copyright (c) 2018 Ramkumar Thiyagarajan
+*************************************************************************************************
+* File: Renderer2D.cpp
+*
+* Description:	Drawing primitive shapes, and renders the sprites.
+*				Vertex Shader and Fragment Shader is implemented
+*
+* Author: Ramkumar Thiyagarajan
+*
+* Date: 6/11/2018
+*************************************************************************************************
+*/
+
 #include "Renderer2D.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
