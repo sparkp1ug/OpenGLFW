@@ -34,18 +34,18 @@ public:
 	~Renderer2D();
 
 protected:
+	enum { MAX_SPRITES = 512 };
+
 	unsigned int m_shader;
 	
 	unsigned int m_VBO, m_VAO;
 
 	struct Vertex
 	{
-		float posX;
-		float posY;
-		float posZ;
+		float pos[3];
 	};
 
-	Vertex m_vertices[1];
+	Vertex m_vertices[1024];
 };
 
 #endif // !RENDERER2D_H_

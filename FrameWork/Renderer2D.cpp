@@ -22,7 +22,7 @@
 Renderer2D::Renderer2D()
 {
 
-	/* ---------------------------------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------------- */
 	/* build and compile shader program */
 	const char * vertexShaderSource = "#version 330 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
@@ -74,7 +74,7 @@ Renderer2D::Renderer2D()
 	}
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
-	/* ---------------------------------------------------------------------------------------------- */
+	/* ------------------------------------------------------------------------- */
 
 	// use of vertex array object
 	m_VAO = -1;
@@ -88,23 +88,45 @@ Renderer2D::Renderer2D()
 
 void Renderer2D::drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3)
 {
+	m_vertices[0].pos[0] = x1;
+	m_vertices[0].pos[1] = y1;
+	m_vertices[0].pos[2] = 0.0f;
+
+	m_vertices[1].pos[0] = x2;
+	m_vertices[1].pos[1] = y2;
+	m_vertices[1].pos[2] = 0.0f;
+
+	m_vertices[2].pos[0] = x3;
+	m_vertices[2].pos[1] = y3;
+	m_vertices[2].pos[2] = 0.0f;
+
+	// Allocate space and uploade data from CPU to GPU
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices) * 3, m_vertices, GL_STATIC_DRAW);
+	// specify how the data for position can be accessed
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+	// enable the attribute
+	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(m_VAO);
+	glDrawArrays(GL_TRIANGLES, 0, 3);
 }
 
 void Renderer2D::drawPoint(float x1, float y1, float size)
 {
-	m_vertices[0].posX = x1;
-	m_vertices[0].posY = y1;
-	m_vertices[0].posZ = 0.0f;
+	m_vertices[0].pos[0] = x1;
+	m_vertices[0].pos[1] = y1;
+	m_vertices[0].pos[2] = 0.0f;
 
 	// Allocate space and upload data from CPU to GPU 
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(m_vertices) * 1, m_vertices, GL_STATIC_DRAW);
-	// Specify how the data for position can be accessed */
+	// Specify how the data for position can be accessed
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	// Enable the attribute */
+	// Enable the attribute
 	glEnableVertexAttribArray(0);
 
-	glBindVertexArray(m_VAO);
+	//glBindVertexArray(m_VAO);
 	glDrawArrays(GL_POINTS, 0, 1);
 	glPointSize(size);
 }

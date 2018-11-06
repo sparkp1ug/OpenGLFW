@@ -119,6 +119,7 @@ void Application2D::draw()
 	// draw here
 	renderer2D->drawPoint(0.8f, 0.5f, 5.0f);
 	renderer2D->drawPoint(0.1f, 0.6f, 2.0f);
+	renderer2D->drawTriangle(-0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f);
 }
 
 void Application2D::clearScreen()
