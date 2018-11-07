@@ -21,13 +21,17 @@ class Renderer2D {
 public:
 	Renderer2D();
 
-	// draw a triangle on the screen
+	// draws a triangle on the screen
 	void drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3);
 
-	// draw a point on the screen
+	// draws a point on the screen
 	void drawPoint(float x1, float y1, float size = 1.0f);
 
+	// draws a rectangle
 	void drawRectangle(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+
+	// draws a circle
+	void drawCircle(float x1, float y1, float radius);
 
 	// change the color of the render screen
 	void SetColor(float r, float g, float b, float a);
@@ -54,6 +58,10 @@ protected:
 	unsigned int m_indices[MAX_SPRITES * 6];
 
 	float m_r, m_g, m_b, m_a;
+
+	int m_currentVertex;
+
+	int m_currentIndex;
 };
 
 #endif // !RENDERER2D_H_

@@ -22,7 +22,8 @@
 
 Renderer2D::Renderer2D() {
 	SetColor(1.0f, 0.0f, 0.0f, 1.0f);
-
+	m_currentVertex = 0;
+	m_currentIndex = 0;
 	/* ------------------------------------------------------------------------- */
 	/* build and compile shader program */
 	const char * vertexShaderSource = "#version 460 core\n"
@@ -169,60 +170,76 @@ void Renderer2D::drawPoint(float x1, float y1, float size) {
 }
 
 void Renderer2D::drawRectangle(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+	// reset the current vertex
+	m_currentVertex = 0;
+	m_currentIndex = 0;
+	// set the startindex to 0
+	int startIndex = m_currentVertex;
+
+	// pos
 	m_vertices[0].pos[0] = x1;
 	m_vertices[0].pos[1] = y1;
 	m_vertices[0].pos[2] = 0.0f;
-
-	m_vertices[1].pos[0] = x2;
-	m_vertices[1].pos[1] = y2;
-	m_vertices[1].pos[2] = 0.0f;
-
-	m_vertices[2].pos[0] = x3;
-	m_vertices[2].pos[1] = y3;
-	m_vertices[2].pos[2] = 0.0f;
-
-	m_vertices[3].pos[0] = x4;
-	m_vertices[3].pos[1] = y4;
-	m_vertices[3].pos[2] = 0.0f;
-
 	// color
 	m_vertices[0].color[0] = m_r;
 	m_vertices[0].color[1] = m_g;
 	m_vertices[0].color[2] = m_b;
 	m_vertices[0].color[3] = m_a;
+	m_currentVertex++;
 
+	// pos
+	m_vertices[1].pos[0] = x2;
+	m_vertices[1].pos[1] = y2;
+	m_vertices[1].pos[2] = 0.0f;
+	// color
 	m_vertices[1].color[0] = m_r;
 	m_vertices[1].color[1] = m_g;
 	m_vertices[1].color[2] = m_b;
 	m_vertices[1].color[3] = m_a;
+	m_currentVertex++;
 
+	// pos
+	m_vertices[2].pos[0] = x3;
+	m_vertices[2].pos[1] = y3;
+	m_vertices[2].pos[2] = 0.0f;
+	// color
 	m_vertices[2].color[0] = m_r;
 	m_vertices[2].color[1] = m_g;
 	m_vertices[2].color[2] = m_b;
 	m_vertices[2].color[3] = m_a;
+	m_currentVertex++;
 
+	// pos
+	m_vertices[3].pos[0] = x4;
+	m_vertices[3].pos[1] = y4;
+	m_vertices[3].pos[2] = 0.0f;
+	// color
 	m_vertices[3].color[0] = m_r;
 	m_vertices[3].color[1] = m_g;
 	m_vertices[3].color[2] = m_b;
 	m_vertices[3].color[3] = m_a;
+	m_currentVertex++;
 
-	m_indices[0] = 0;
-	m_indices[1] = 1;
-	m_indices[2] = 2;
+	m_indices[m_currentIndex++] = startIndex + 0;
+	m_indices[m_currentIndex++] = startIndex + 1;
+	m_indices[m_currentIndex++] = startIndex + 2;
 
-	m_indices[3] = 0;
-	m_indices[4] = 2;
-	m_indices[5] = 3;
+	m_indices[m_currentIndex++] = startIndex + 0;
+	m_indices[m_currentIndex++] = startIndex + 2;
+	m_indices[m_currentIndex++] = startIndex + 3;
 
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * 4, m_vertices);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(int) * 6, m_indices);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * m_currentVertex, m_vertices);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(int) * m_currentIndex, m_indices);
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+}
+
+void Renderer2D::drawCircle(float x1, float y1, float radius) {
 }
 
 void Renderer2D::SetColor(float r, float g, float b, float a) {
@@ -234,6 +251,7 @@ void Renderer2D::SetColor(float r, float g, float b, float a) {
 
 void Renderer2D::begin() {
 	glUseProgram(m_shader);
+	SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 Renderer2D::~Renderer2D() {
