@@ -17,6 +17,7 @@
 #include "Renderer2D.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
+#include <glm/vec2.hpp>
 #include <iostream>
 
 Renderer2D::Renderer2D() {
