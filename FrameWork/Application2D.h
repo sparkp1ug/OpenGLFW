@@ -20,8 +20,7 @@
 #include "Renderer2D.h"
 
 struct GLFWwindow;
-class Application2D
-{
+class Application2D {
 public:
 	/* GLFW - Initialize and Configure */
 	Application2D();

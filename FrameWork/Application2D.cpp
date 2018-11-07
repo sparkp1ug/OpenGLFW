@@ -20,12 +20,11 @@
 #include <iostream>
 
 /* GLFW - Initialize */
-Application2D::Application2D() : m_gameOver(false), m_window(nullptr)
-{
+Application2D::Application2D() : m_gameOver(false), m_window(nullptr) {
 	glfwInit();
 }
 
-/* 
+/** 
 	Creates an OpenGL window
 
 	@param width - width of the viewport window
@@ -35,14 +34,12 @@ Application2D::Application2D() : m_gameOver(false), m_window(nullptr)
 
 	@return windowCreated - returns true if the viewport has been created
 */
-bool Application2D::createWindow(int width, int height, const char * title, bool fullScreen)
-{
+bool Application2D::createWindow(int width, int height, const char * title, bool fullScreen) {
 	bool windowCreated = false;
-	m_window = glfwCreateWindow(width, height, title, 
-								(fullScreen ? glfwGetPrimaryMonitor() : nullptr), 
+	m_window = glfwCreateWindow(width, height, title,
+		(fullScreen ? glfwGetPrimaryMonitor() : nullptr),
 								nullptr);
-	if (m_window == nullptr)
-	{
+	if (m_window == nullptr) {
 		glfwTerminate();
 		return windowCreated;
 	}
@@ -53,8 +50,7 @@ bool Application2D::createWindow(int width, int height, const char * title, bool
 	glfwMakeContextCurrent(m_window);
 
 	// GLAD - load all OpenGL function pointers
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
-	{
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
 		windowCreated = false;
 		std::cout << "Failed to initialize GLAD" << std::endl;
 		return windowCreated;
@@ -63,10 +59,8 @@ bool Application2D::createWindow(int width, int height, const char * title, bool
 	return windowCreated;
 }
 
-void Application2D::quit(GLFWwindow * window)
-{
-	if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-	{
+void Application2D::quit(GLFWwindow * window) {
+	if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		m_gameOver = true;
 	}
 	// set it true if the escape key or close button is pressed
@@ -74,15 +68,12 @@ void Application2D::quit(GLFWwindow * window)
 }
 
 
-void Application2D::runApp(const char * title, int width, int height, bool fullscreen)
-{
+void Application2D::runApp(const char * title, int width, int height, bool fullscreen) {
 	// check if the window has been successfully created
-	if (createWindow(width, height, title, fullscreen))
-	{
+	if (createWindow(width, height, title, fullscreen)) {
 		start();
 		// GLFW - Loop until the user closes the window
-		while (!m_gameOver)
-		{
+		while (!m_gameOver) {
 			// input from the user to close the window
 			quit(m_window);
 
@@ -104,13 +95,11 @@ void Application2D::runApp(const char * title, int width, int height, bool fulls
 	glfwTerminate();
 }
 
-void Application2D::start()
-{
+void Application2D::start() {
 	renderer2D = new Renderer2D();
 }
 
-void Application2D::draw()
-{
+void Application2D::draw() {
 	// clear the screen each frame before drawing
 	clearScreen();
 	// begin drawing by using the shader program
@@ -120,14 +109,13 @@ void Application2D::draw()
 	renderer2D->drawPoint(0.8f, 0.5f, 5.0f);
 	renderer2D->drawPoint(0.1f, 0.6f, 2.0f);
 	renderer2D->drawTriangle(-0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f);
+	renderer2D->drawRectangle(-1.0f, 1.0f, -0.7f, 1.0f, -0.7f, 0.4f, -1.0f, 0.4f);
 }
 
-void Application2D::clearScreen()
-{
+void Application2D::clearScreen() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 }
 
-Application2D::~Application2D()
-{
+Application2D::~Application2D() {
 }
 
