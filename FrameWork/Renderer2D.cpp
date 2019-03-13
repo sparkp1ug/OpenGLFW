@@ -46,6 +46,7 @@ Renderer2D::Renderer2D() {
 	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
 	glCompileShader(vertexShader);
+
 	// check for vertex shader compile errors
 	int success = GL_FALSE;
 	char infoLog[512];
@@ -58,17 +59,20 @@ Renderer2D::Renderer2D() {
 	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
 	glCompileShader(fragmentShader);
+
 	// check for fragment shader compile errors
 	glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
 	if (!success) {
 		glGetShaderInfoLog(fragmentShader, 512, NULL, infoLog);
 		std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
 	}
+
 	// link shaders 
 	m_shader = glCreateProgram();
 	glAttachShader(m_shader, vertexShader);
 	glAttachShader(m_shader, fragmentShader);
 	glLinkProgram(m_shader);
+
 	// check for shader linking errors 
 	glGetProgramiv(m_shader, GL_LINK_STATUS, &success);
 	if (!success) {
@@ -83,6 +87,7 @@ Renderer2D::Renderer2D() {
 	m_VAO = -1;
 	glGenVertexArrays(1, &m_VAO);
 	glBindVertexArray(m_VAO);
+
 	// Create a Vertex Buffer Object that will store the vertices on video memory */
 	m_VBO = -1;
 	glGenBuffers(1, &m_VBO);
@@ -94,6 +99,7 @@ Renderer2D::Renderer2D() {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Vertex) * (MAX_SPRITES * 4), m_vertices, GL_STATIC_DRAW);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(m_indices), m_indices, GL_STATIC_DRAW);
+
 	// position attribute - Specify how the data for position can be accessed 
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (char*)0);
 	// enable the position attribute
@@ -164,6 +170,7 @@ void Renderer2D::drawPoint(float x1, float y1, float size) {
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex), m_vertices);
+
 	glDrawArrays(GL_POINTS, 0, 1);
 	glPointSize(size);
 	glBindVertexArray(0);
