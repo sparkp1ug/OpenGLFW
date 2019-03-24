@@ -42,7 +42,7 @@ protected:
 	bool createWindow(int width, int height, const char* title, bool fullscreen = false);
 
 	/* quit GLFW window upon escape key press */
-	void quit(GLFWwindow* window);
+	void quit();
 
 	GLFWwindow* m_window;
 

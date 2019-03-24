@@ -59,12 +59,12 @@ bool Application2D::createWindow(int width, int height, const char * title, bool
 	return windowCreated;
 }
 
-void Application2D::quit(GLFWwindow * window) {
+void Application2D::quit() {
 	if (glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
 		m_gameOver = true;
 	}
 	// set it true if the escape key or close button is pressed
-	m_gameOver = m_gameOver || glfwWindowShouldClose(window) == true;
+	m_gameOver = m_gameOver || glfwWindowShouldClose(m_window) == true;
 }
 
 
@@ -75,7 +75,7 @@ void Application2D::runApp(const char * title, int width, int height, bool fulls
 		// GLFW - Loop until the user closes the window
 		while (!m_gameOver) {
 			// input from the user to close the window
-			quit(m_window);
+			quit();
 
 			// Render here
 			glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -106,12 +106,15 @@ void Application2D::draw() {
 	renderer2D->begin();
 
 	// draw here
-	renderer2D->drawPoint(0.8f, 0.5f, 5.0f);
+	//renderer2D->drawPoint(0.8f, 0.5f, 5.0f);
 	//renderer2D->drawPoint(0.1f, 0.6f, 2.0f);
 	//renderer2D->SetColor(1.0f, 0.4f, 0.2f, 1.0f);
-	renderer2D->drawTriangle(-0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f);
-	renderer2D->drawRectangle(-1.0f, 1.0f, -0.7f, 1.0f, -0.7f, 0.4f, -1.0f, 0.4f);
-	renderer2D->drawLine(-0.3f, 0.5f, 0.9f, -0.2f, 5.0f);
+	//renderer2D->drawTriangle(-0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f);
+	//renderer2D->drawRectangle(-1.0f, 1.0f, -0.7f, 1.0f, -0.7f, 0.4f, -1.0f, 0.4f);
+	//renderer2D->drawLine(-0.3f, 0.5f, 0.9f, -0.2f, 5.0f);
+	renderer2D->drawCircle(0.0f, 0.0f, 0.3f);
+
+	renderer2D->end();
 }
 
 void Application2D::clearScreen() {
@@ -119,5 +122,6 @@ void Application2D::clearScreen() {
 }
 
 Application2D::~Application2D() {
+	delete renderer2D;
 }
 

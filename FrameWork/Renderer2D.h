@@ -42,6 +42,9 @@ public:
 	// use the shader program
 	void begin();
 
+	// delete the shader program
+	void end();
+
 	~Renderer2D();
 
 protected:

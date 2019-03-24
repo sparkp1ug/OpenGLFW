@@ -17,7 +17,7 @@
 #include "Renderer2D.h"
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
-#include <glm/vec2.hpp>
+#include <glm/ext.hpp>
 #include <iostream>
 
 Renderer2D::Renderer2D() {
@@ -269,7 +269,14 @@ void Renderer2D::drawCircle(float x1, float y1, float radius) {
 	// set the startindex to 0
 	int startIndex = m_currentVertex;
 
-	// center vertex
+	float r = radius;
+	// set p to 0 and Q to radius
+	float p = 0.0f;
+	float q = r;
+	// set the decision parameter
+	float d = 3 - (2 * r);
+
+	// plot the center point
 	// pos
 	m_vertices[m_currentVertex].pos[0] = x1;
 	m_vertices[m_currentVertex].pos[1] = y1;
@@ -281,9 +288,41 @@ void Renderer2D::drawCircle(float x1, float y1, float radius) {
 	m_vertices[m_currentVertex].color[3] = m_a;
 	m_currentVertex++;
 
-	// 32 segment circle
+	float rotDelta = glm::pi<float>() * 2 / 32;
+
 	for (int i = 0; i < 32; ++i) {
+		// pos
+		m_vertices[m_currentVertex].pos[0] = glm::sin(rotDelta * i) * radius + x1;
+		m_vertices[m_currentVertex].pos[1] = glm::cos(rotDelta * i) * radius + y1;
+		m_vertices[m_currentVertex].pos[2] = 0.0f;
+		// color
+		m_vertices[m_currentVertex].color[0] = m_r;
+		m_vertices[m_currentVertex].color[1] = m_g;
+		m_vertices[m_currentVertex].color[2] = m_b;
+		m_vertices[m_currentVertex].color[3] = m_a;
+		m_currentVertex++;
+
+		if (i == (32 - 1)) {
+			m_indices[m_currentIndex++] = startIndex;
+			m_indices[m_currentIndex++] = startIndex + 1;
+			m_indices[m_currentIndex++] = m_currentVertex - 1;
+		}
+		else {
+			m_indices[m_currentIndex++] = startIndex;
+			m_indices[m_currentIndex++] = m_currentVertex;
+			m_indices[m_currentIndex++] = m_currentVertex - 1;
+		}
 	}
+
+	glBindVertexArray(m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * m_currentVertex, m_vertices);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(int) * m_currentIndex, m_indices);
+
+	glDrawElements(GL_TRIANGLES, m_currentIndex, GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
 }
 
 void Renderer2D::drawLine(float x1, float y1, float x2, float y2, float width) {
@@ -341,9 +380,12 @@ void Renderer2D::begin() {
 	SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+void Renderer2D::end() {
+	glDeleteProgram(m_shader);
+}
+
 Renderer2D::~Renderer2D() {
 	glDeleteVertexArrays(1, &m_VAO);
 	glDeleteBuffers(1, &m_VBO);
 	glDeleteBuffers(1, &m_EBO);
-	glDeleteProgram(m_shader);
 }
