@@ -113,47 +113,62 @@ Renderer2D::Renderer2D() {
 }
 
 void Renderer2D::drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3) {
-	m_vertices[0].pos[0] = x1;
-	m_vertices[0].pos[1] = y1;
-	m_vertices[0].pos[2] = 0.0f;
+	// reset the current vertex
+	m_currentVertex = 0;
+	// reset the current index
+	m_currentIndex = 0;
+	// set the startindex to 0
+	int startIndex = m_currentVertex;
 
-	m_vertices[1].pos[0] = x2;
-	m_vertices[1].pos[1] = y2;
-	m_vertices[1].pos[2] = 0.0f;
-
-	m_vertices[2].pos[0] = x3;
-	m_vertices[2].pos[1] = y3;
-	m_vertices[2].pos[2] = 0.0f;
-
+	// first point
+	// pos
+	m_vertices[m_currentVertex].pos[0] = x1;
+	m_vertices[m_currentVertex].pos[1] = y1;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
 	// color
-	m_vertices[0].color[0] = m_r;
-	m_vertices[0].color[1] = m_g;
-	m_vertices[0].color[2] = m_b;
-	m_vertices[0].color[3] = m_a;
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
+	m_currentVertex++;
 
-	m_vertices[1].color[0] = m_r;
-	m_vertices[1].color[1] = m_g;
-	m_vertices[1].color[2] = m_b;
-	m_vertices[1].color[3] = m_a;
+	// second point
+	// pos
+	m_vertices[m_currentVertex].pos[0] = x2;
+	m_vertices[m_currentVertex].pos[1] = y2;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
+	//color
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
+	m_currentVertex++;
 
-	m_vertices[2].color[0] = m_r;
-	m_vertices[2].color[1] = m_g;
-	m_vertices[2].color[2] = m_b;
-	m_vertices[2].color[3] = m_a;
+	// third point
+	// pos
+	m_vertices[m_currentVertex].pos[0] = x3;
+	m_vertices[m_currentVertex].pos[1] = y3;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
+	// color
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
+	m_currentVertex++;
 
-	m_indices[0] = 0;
-	m_indices[1] = 1;
-	m_indices[2] = 2;
+	m_indices[m_currentIndex++] = startIndex;
+	m_indices[m_currentIndex++] = startIndex + 1;
+	m_indices[m_currentIndex++] = startIndex + 2;
 
 
 	glBindVertexArray(m_VAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
 
-	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * 3, m_vertices);
-	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(int) * 3, m_indices);
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * m_currentVertex, m_vertices);
+	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(int) * m_currentIndex, m_indices);
 
-	glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, m_currentIndex, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
@@ -179,52 +194,53 @@ void Renderer2D::drawPoint(float x1, float y1, float size) {
 void Renderer2D::drawRectangle(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
 	// reset the current vertex
 	m_currentVertex = 0;
+	// reset the current index
 	m_currentIndex = 0;
 	// set the startindex to 0
 	int startIndex = m_currentVertex;
 
 	// pos
-	m_vertices[0].pos[0] = x1;
-	m_vertices[0].pos[1] = y1;
-	m_vertices[0].pos[2] = 0.0f;
+	m_vertices[m_currentVertex].pos[0] = x1;
+	m_vertices[m_currentVertex].pos[1] = y1;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
 	// color
-	m_vertices[0].color[0] = m_r;
-	m_vertices[0].color[1] = m_g;
-	m_vertices[0].color[2] = m_b;
-	m_vertices[0].color[3] = m_a;
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
 	m_currentVertex++;
 
 	// pos
-	m_vertices[1].pos[0] = x2;
-	m_vertices[1].pos[1] = y2;
-	m_vertices[1].pos[2] = 0.0f;
+	m_vertices[m_currentVertex].pos[0] = x2;
+	m_vertices[m_currentVertex].pos[1] = y2;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
 	// color
-	m_vertices[1].color[0] = m_r;
-	m_vertices[1].color[1] = m_g;
-	m_vertices[1].color[2] = m_b;
-	m_vertices[1].color[3] = m_a;
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
 	m_currentVertex++;
 
 	// pos
-	m_vertices[2].pos[0] = x3;
-	m_vertices[2].pos[1] = y3;
-	m_vertices[2].pos[2] = 0.0f;
+	m_vertices[m_currentVertex].pos[0] = x3;
+	m_vertices[m_currentVertex].pos[1] = y3;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
 	// color
-	m_vertices[2].color[0] = m_r;
-	m_vertices[2].color[1] = m_g;
-	m_vertices[2].color[2] = m_b;
-	m_vertices[2].color[3] = m_a;
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
 	m_currentVertex++;
 
 	// pos
-	m_vertices[3].pos[0] = x4;
-	m_vertices[3].pos[1] = y4;
-	m_vertices[3].pos[2] = 0.0f;
+	m_vertices[m_currentVertex].pos[0] = x4;
+	m_vertices[m_currentVertex].pos[1] = y4;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
 	// color
-	m_vertices[3].color[0] = m_r;
-	m_vertices[3].color[1] = m_g;
-	m_vertices[3].color[2] = m_b;
-	m_vertices[3].color[3] = m_a;
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
 	m_currentVertex++;
 
 	m_indices[m_currentIndex++] = startIndex + 0;
@@ -242,11 +258,75 @@ void Renderer2D::drawRectangle(float x1, float y1, float x2, float y2, float x3,
 	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * m_currentVertex, m_vertices);
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(int) * m_currentIndex, m_indices);
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, m_currentIndex, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
 void Renderer2D::drawCircle(float x1, float y1, float radius) {
+	// reset the current vertex
+	m_currentVertex = 0;
+	m_currentIndex = 0;
+	// set the startindex to 0
+	int startIndex = m_currentVertex;
+
+	// center vertex
+	// pos
+	m_vertices[m_currentVertex].pos[0] = x1;
+	m_vertices[m_currentVertex].pos[1] = y1;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
+	// color
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
+	m_currentVertex++;
+
+	// 32 segment circle
+	for (int i = 0; i < 32; ++i) {
+	}
+}
+
+void Renderer2D::drawLine(float x1, float y1, float x2, float y2, float width) {
+	// reset the current vertex
+	m_currentVertex = 0;
+	m_currentIndex = 0;
+	// set the startindex to 0
+	int startIndex = m_currentVertex;
+	
+	// plot the points
+	// pos
+	m_vertices[m_currentVertex].pos[0] = x1;
+	m_vertices[m_currentVertex].pos[1] = y1;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
+	// color
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
+	m_currentVertex++;
+
+	// plot the points
+	// pos
+	m_vertices[m_currentVertex].pos[0] = x2;
+	m_vertices[m_currentVertex].pos[1] = y2;
+	m_vertices[m_currentVertex].pos[2] = 0.0f;
+	// color
+	m_vertices[m_currentVertex].color[0] = m_r;
+	m_vertices[m_currentVertex].color[1] = m_g;
+	m_vertices[m_currentVertex].color[2] = m_b;
+	m_vertices[m_currentVertex].color[3] = m_a;
+	m_currentVertex++;
+
+	glLineWidth(width);
+
+	glBindVertexArray(m_VAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+
+	glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(Vertex) * m_currentVertex, m_vertices);
+
+	glDrawArrays(GL_LINES, 0, 2);
+	glBindVertexArray(0);
 }
 
 void Renderer2D::SetColor(float r, float g, float b, float a) {

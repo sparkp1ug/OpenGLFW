@@ -33,6 +33,9 @@ public:
 	// draws a circle
 	void drawCircle(float x1, float y1, float radius);
 
+	// draws a line using bresenhams line generation algorithm
+	void drawLine(float x1, float y1, float x2, float y2, float width = 1.0f);
+
 	// change the color of the render screen
 	void SetColor(float r, float g, float b, float a);
 
