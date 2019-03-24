@@ -88,7 +88,6 @@ void Application2D::runApp(const char * title, int width, int height, bool fulls
 
 			// swap front and back buffers
 			glfwSwapBuffers(m_window);
-
 		}
 	}
 	glfwDestroyWindow(m_window);
@@ -106,13 +105,13 @@ void Application2D::draw() {
 	renderer2D->begin();
 
 	// draw here
-	//renderer2D->drawPoint(0.8f, 0.5f, 5.0f);
-	//renderer2D->drawPoint(0.1f, 0.6f, 2.0f);
-	//renderer2D->SetColor(1.0f, 0.4f, 0.2f, 1.0f);
-	//renderer2D->drawTriangle(-0.5f, -0.5f, 0.5f, -0.5f, -0.5f, 0.5f);
-	//renderer2D->drawRectangle(-1.0f, 1.0f, -0.7f, 1.0f, -0.7f, 0.4f, -1.0f, 0.4f);
-	//renderer2D->drawLine(-0.3f, 0.5f, 0.9f, -0.2f, 5.0f);
-	renderer2D->drawCircle(0.0f, 0.0f, 0.3f);
+	renderer2D->drawPoint(100.0f, 500.0f, 5.0f);
+	renderer2D->drawPoint(500.0f, 200.0f, 2.0f);
+	renderer2D->SetColor(1.0f, 0.4f, 0.2f, 1.0f);
+	renderer2D->drawTriangle(200.0f, 150.0f, 600.0f, 150.0f, 400.0f, 450.0f);
+	renderer2D->drawRectangle(0.0f, 50.0f, 50.0f, 50.0f, 50.0f, 0.0f, 0.0f, 0.0f);
+	renderer2D->drawLine(200.0f, 400.0f, 700.0f, 100.0f, 5.0f);
+	renderer2D->drawCircle(0.0f, 200.0f, 10.0f);
 
 	renderer2D->end();
 }

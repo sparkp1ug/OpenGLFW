@@ -21,6 +21,8 @@
 #include <iostream>
 
 Renderer2D::Renderer2D() {
+	m_cameraScale = 1.0f;
+
 	SetColor(1.0f, 0.0f, 0.0f, 1.0f);
 	m_currentVertex = 0;
 	m_currentIndex = 0;
@@ -29,10 +31,16 @@ Renderer2D::Renderer2D() {
 	const char * vertexShaderSource = "#version 460 core\n"
 		"layout (location = 0) in vec3 aPos;\n"
 		"layout (location = 1) in vec4 color;\n"
+
 		"out vec4 vertexColor;\n"
+		
+		"uniform mat4 modelMatrix;\n"
+		"uniform mat4 viewMatrix;\n"
+		"uniform mat4 projectionMatrix;\n"
+
 		"void main()\n"
 		"{\n"
-		"	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0f);\n"
+		"	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(aPos, 1.0f);\n"
 		"	vertexColor = color;\n"
 		"}\0";
 	const char * fragmentShaderSource = "#version 460 core\n"
@@ -169,7 +177,7 @@ void Renderer2D::drawTriangle(float x1, float y1, float x2, float y2, float x3, 
 	glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, sizeof(int) * m_currentIndex, m_indices);
 
 	glDrawElements(GL_TRIANGLES, m_currentIndex, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	glBindVertexArray(0); 
 }
 
 void Renderer2D::drawPoint(float x1, float y1, float size) {
@@ -376,7 +384,33 @@ void Renderer2D::SetColor(float r, float g, float b, float a) {
 }
 
 void Renderer2D::begin() {
+	// get the window window width and height
+	int width = 0;
+	int height = 0;
+	GLFWwindow* window = glfwGetCurrentContext();
+	glfwGetWindowSize(window, &width, &height);
+
 	glUseProgram(m_shader);
+
+	// initializing model identity matrix
+	glm::mat4 model = glm::mat4(1.0f);
+	// initializing view identity matrix
+	glm::mat4 view = glm::mat4(1.0f);
+	// initializing projection identity matrix
+	glm::mat4 projection = glm::mat4(1.0f);
+
+	model = glm::rotate(model, glm::radians(0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	view = glm::translate(view, glm::vec3(0.0f, 0.0f, 0.0f));
+	projection = glm::ortho(0.0f, (float)width, 0.0f, (float)height, 1.0f, -101.0f);
+
+	// pass the matrices into shader
+	glUniformMatrix4fv(glGetUniformLocation(m_shader, "modelMatrix"), 1, GL_FALSE, glm::value_ptr(model));
+	glUniformMatrix4fv(glGetUniformLocation(m_shader, "viewMatrix"), 1, GL_FALSE, glm::value_ptr(view));
+	glUniformMatrix4fv(glGetUniformLocation(m_shader, "projectionMatrix"), 1, GL_FALSE, glm::value_ptr(projection));
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	SetColor(1.0f, 1.0f, 1.0f, 1.0f);
 }
 

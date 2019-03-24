@@ -22,18 +22,25 @@ public:
 	Renderer2D();
 
 	// draws a triangle on the screen
+	// @param x1, y1 left pooint
+	// @param x2, y2 right point
+	// @param x3, y3 center point
 	void drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3);
 
 	// draws a point on the screen
 	void drawPoint(float x1, float y1, float size = 1.0f);
 
 	// draws a rectangle
+	// @param x1, y1 top left point
+	// @param x2, y2 top right point
+	// @param x3, y3 bottom right point
+	// @param x4, y4 bottom left point
 	void drawRectangle(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
 
 	// draws a circle
 	void drawCircle(float x1, float y1, float radius);
 
-	// draws a line using bresenhams line generation algorithm
+	// draws a line
 	void drawLine(float x1, float y1, float x2, float y2, float width = 1.0f);
 
 	// change the color of the render screen
@@ -51,6 +58,8 @@ protected:
 	enum { MAX_SPRITES = 512 };
 
 	unsigned int m_shader;
+
+	float m_cameraScale;
 
 	unsigned int m_VBO, m_VAO, m_EBO;
 
