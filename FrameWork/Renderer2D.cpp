@@ -112,7 +112,7 @@ Renderer2D::Renderer2D() {
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (char*)0);
 	// enable the position attribute
 	glEnableVertexAttribArray(0);
-	// color attribute - Specify how the data for position can be accessed 
+	// color attribute - Specify how the data for color can be accessed 
 	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (char*)12);
 	// enable the color attribute
 	glEnableVertexAttribArray(1);
